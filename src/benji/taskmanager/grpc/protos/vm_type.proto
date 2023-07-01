@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package grpc_vm;
+
+message VM {
+  string name = 1;
+  string ems_ref = 2;
+  string user_id = 3;
+}

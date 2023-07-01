@@ -1,0 +1,45 @@
+#!/bin/bash 
+# 2021-06-28
+# CanhDX - canhdx2@fpt.com.vn - FTI_CAS
+# LVM Controller update storage size
+# ----------------------------------------------
+
+display_help() {
+    echo "======================================================"
+    echo "# Script support Benji backup service"
+    echo "# Update new size for lvm"
+    echo "======================================================"
+    echo "Usage: $0 {NAME} {VG_NAME} {DISK_ALLOWED}" >&2
+    echo
+    echo "   Required 3 parrams:"
+    echo "   - NAME              Name of customer will be Update path storage"
+    echo "   - VG_NAME           VG of LVM"
+    echo "   - DISK_ALLOWED      New size of LV in BYTES"
+    echo
+    echo "======================================================"
+    exit 1
+}
+
+LENGTH_VAR=$(echo "$@" | awk '{print NF}')
+
+if [ "$LENGTH_VAR" -eq 0 ]  || [ "$1" == "-h" ] || [ "$1" == "--help" ]; then
+  display_help
+  exit 0
+fi
+
+LENGTH_VAR=$(echo "$@" | awk '{print NF}')
+if [ "$LENGTH_VAR" -ne 3 ]; then
+    echo "Illegal number of parameters"
+    exit 0
+fi
+
+NAME=$1
+VG_NAME=$2
+DISK_ALLOWED=$3
+
+# Script exec
+lvextend -L${DISK_ALLOWED}B /dev/${VG_NAME}/${NAME}
+# Remove failed fstab cannot get UUID
+sed -Ei "/UUID= /d"  /etc/fstab
+mount -a
+resize2fs /dev/${VG_NAME}/${NAME}

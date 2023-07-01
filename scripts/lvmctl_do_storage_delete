@@ -1,0 +1,56 @@
+#!/bin/bash 
+# 2021-06-28
+# CanhDX - canhdx2@fpt.com.vn - FTI_CAS
+# LVM Controller delete storage size
+# ----------------------------------------------
+
+display_help() {
+    echo "======================================================"
+    echo "# Script support Benji backup service"
+    echo "# Unmount & delete lvm & deleye path & remove fstab "
+    echo "======================================================"
+    echo "Usage: $0 {NAME} {VG_NAME} {PATH} " >&2
+    echo
+    echo "   Required 3 parrams:"
+    echo "   - NAME              Name of customer will be Update path storage"
+    echo "   - VG_NAME           VG of LVM"
+    echo "   - PATH              Path to mount LV for storage"
+    echo
+    echo "======================================================"
+    exit 1
+}
+
+LENGTH_VAR=$(echo "$@" | awk '{print NF}')
+
+if [ "$LENGTH_VAR" -eq 0 ]  || [ "$1" == "-h" ] || [ "$1" == "--help" ]; then
+  display_help
+  exit 0
+fi
+
+if [ "$LENGTH_VAR" -ne 3 ]; then
+    echo "Illegal number of parameters"
+    exit 0
+fi
+
+NAME=$1
+VG_NAME=$2
+PATH_STR=$3
+
+# Convert name lvm 
+if [[ $NAME =~ ['-'] ]]; then
+    NAME_CV=$(echo "$NAME" | sed -r 's/-/--/g')
+else 
+    NAME_CV=$NAME
+fi
+
+# Script exec
+umount ${PATH_STR}
+UUID=$(blkid | grep -w "${VG_NAME}-${NAME_CV}:" | awk '{print $2}' | cut -d '=' -f2 | tr -d '"')
+
+# Remove failed fstab & cannot get UUID
+sed -Ei "/${UUID}/d"  /etc/fstab
+sed -Ei "/UUID= /d"  /etc/fstab
+
+# Remove fstab 
+lvremove -f /dev/${VG_NAME}/${NAME}
+rm -rf ${PATH_STR}

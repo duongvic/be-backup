@@ -1,0 +1,290 @@
+configuration:
+  type: dict
+  required: True
+  empty: False
+  schema:
+    configurationVersion:
+      type: ['string', 'integer']
+      coerce: to_string
+      required: True
+      empty: False
+      allowed:
+        - '1'
+    logFile:
+      type: string
+      default: null
+      nullable: True
+    log_level:
+      type: string
+      required: True
+      empty: True
+    blockSize:
+      type: integer
+      min: 512
+      max: 33554432
+      default: 4194304
+    hashFunction:
+      type: string
+      empty: False
+      default: 'SHA512'
+    processName:
+      type: string
+      empty: False
+      default: 'benji'
+    disallowRemoveWhenYounger:
+      type: integer
+      empty: False
+      min: 0
+      default: 6
+    databaseEngine:
+      type: string
+      required: True
+      empty: False
+    defaultStorage:
+      type: string
+      required: True
+      empty: False
+
+    defaultPath:
+      type: string
+      required: True
+      empty: False
+    lvm_vg:
+      type: string
+      required: True
+      empty: False
+    lvm_lvthinpool:
+      type: string
+      required: True
+      empty: False      
+    lvm_permit_overcommit:
+      type: float
+      required: True
+      empty: False 
+
+    bind_host:
+      type: string
+      required: True
+      empty: True
+    bind_port:
+      type: integer
+      required: False
+      empty: True
+    bind_grpc_port:
+      type: integer
+      required: False
+      empty: True
+    thread_workers:
+      type: integer
+      required: False
+      empty: True
+    enable_secure_grpc_messaging:
+      type: boolean
+      required: False
+      empty: True
+    taskmanager_grpc_credential:
+      type: string
+      required: False
+      empty: True
+    grpc_service:
+      type: string
+      default: null
+      nullable: True
+    grpc_servicer:
+      type: string
+      default: null
+      nullable: True
+
+    console_formatter:
+      type: string
+      required: True
+      empty: True
+
+    nbd:
+      type: dict
+      default: {}
+      schema:
+        blockCache:
+          type: dict
+          default: {}
+          schema:
+            directory:
+              type: string
+              required: True
+              empty: False
+              default: '/tmp/benji/nbd/block-cache'
+            maximumSize:
+              type: integer
+              required: True
+              empty: False
+              default: 2126512128
+        cowStore:
+          type: dict
+          default: {}
+          schema:
+            directory:
+              type: string
+              required: True
+              empty: False
+              default: '/tmp/benji/nbd/cow-store'
+
+    storages:
+      type: list
+      empty: False
+      required: True
+      schema:
+        type: dict
+        schema:
+          name:
+            type: string
+            required: True
+            empty: False
+            # Same as InputValidation.VALUE_REGEXP in utils.py
+            regex: '^(?!-)[-a-zA-Z0-9_.:/@]+(?<!-)$'
+          storageId:
+            type: integer
+            empty: False
+            min: 1
+          module:
+            type: string
+            required: True
+            empty: False
+          configuration:
+            # This is checked against another schema
+            type: dict
+            allow_unknown: True
+          node:
+            type: string
+            empty: False
+            required: True
+          user_id:
+            type: integer
+            empty: False
+            required: True
+
+    transforms:
+      type: list
+      empty: False
+      schema:
+        type: dict
+        schema:
+          name:
+            type: string
+            required: True
+            empty: False
+            # Same as InputValidation.VALUE_REGEXP in utils.py
+            regex: '^(?!-)[-a-zA-Z0-9_.:/@]+(?<!-)$'
+          module:
+            type: string
+            required: True
+            empty: False
+          configuration:
+            # This is checked against another schema
+            type: dict
+            allow_unknown: True
+
+    ios:
+      type: list
+      empty: False
+      required: True
+      schema:
+        type: dict
+        schema:
+          name:
+            type: string
+            required: True
+            empty: False
+            # Same as InputValidation.VALUE_REGEXP in utils.py
+            regex: '^(?!-)[-a-zA-Z0-9_.:/@]+(?<!-)$'
+          module:
+            type: string
+            required: True
+            empty: False
+          configuration:
+            # This is checked against another schema
+            type: dict
+            allow_unknown: True
+
+    nodes:
+      type: list
+      empty: False
+      required: True
+      schema:
+        type: dict
+        schema:
+          name:
+            type: string
+            required: True
+            empty: False
+            # Same as InputValidation.VALUE_REGEXP in utils.py
+            regex: '^(?!-)[-a-zA-Z0-9_.:/@]+(?<!-)$'
+          host:
+            type: string
+            required: True
+            empty: False
+          port:
+            type: integer
+            required: True
+            empty: False
+
+    grpc_managers:
+      type: list
+      empty: True
+      required: False
+      schema:
+        type: dict
+        schema:
+          service:
+            type: string
+            required: True
+            empty: False
+          servicer:
+            type: string
+            required: True
+            empty: False
+
+    ops_auth:
+      type: dict
+      default: { }
+      schema:
+        username:
+          type: string
+          required: True
+          empty: False
+          default: 'default'
+        password:
+          type: string
+          required: True
+          empty: False
+          default: 'default'
+        project_name:
+          type: string
+          required: True
+          empty: False
+          default: 'default'
+        endpoint:
+          type: string
+          required: True
+          empty: False
+          default: 'default'
+        domain_name:
+          type: string
+          required: True
+          empty: False
+          default: 'default'
+    telegram_token:
+      type: string
+      default: null
+      nullable: True
+    telegram_group_id:
+      type: string
+      default: null
+      nullable: True
+    cas_mail_api_host:
+      type: string
+      default: null
+      nullable: True
+    cas_mail_api_port:
+      type: integer
+      default: null
+      nullable: True

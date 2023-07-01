@@ -1,0 +1,32 @@
+parents:
+- benji.storage.base-v1
+configuration:
+  type: dict
+  required: True
+  empty: False
+  schema:
+    readCache:
+      type: dict
+      empty: False
+      schema:
+        directory:
+          type: string
+          required: True
+          empty: False
+          dependencies:
+          - maximumSize
+          - shards
+        maximumSize:
+          type: integer
+          required: True
+          min: 1
+          dependencies:
+          - directory
+          - shards
+        shards:
+          type: integer
+          required: True
+          min: 1
+          dependencies:
+          - directory
+          - maximumSize

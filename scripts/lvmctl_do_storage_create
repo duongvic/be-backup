@@ -1,0 +1,63 @@
+#!/bin/bash 
+# 2021-06-28
+# CanhDX - canhdx2@fpt.com.vn - FTI_CAS
+# LVM Controller create storage and mount path 
+# ----------------------------------------------
+
+display_help() {
+    echo "======================================================"
+    echo "# Script support Benji backup service"
+    echo "# Create lvm & format & create path & add fstab & mount"
+    echo "======================================================"
+    echo "Usage: $0 {NAME} {VG_NAME} {LV_THINPOOL} {PATH} {DISK_ALLOWED}" >&2
+    echo
+    echo "   Required 5 parrams:"
+    echo "   - NAME              Name of customer will be Update path storage"
+    echo "   - VG_NAME           VG of LVM"
+    echo "   - LV_THINPOOL       LVthinpool to create LV of LVM"
+    echo "   - PATH              Path to mount LV for storage"
+    echo "   - DISK_ALLOWED      Size of LV in BYTES"
+    echo
+    echo "======================================================"
+    exit 1
+}
+
+LENGTH_VAR=$(echo "$@" | awk '{print NF}')
+
+if [ "$LENGTH_VAR" -eq 0 ] || [ "$1" == "-h" ] || [ "$1" == "--help" ]; then
+  display_help
+  exit 0
+fi
+
+if [ "$LENGTH_VAR" -ne 5 ]; then
+    echo "Illegal number of parameters"
+    exit 0
+fi
+
+NAME=$1
+VG_NAME=$2
+LV_THINPOOL=$3
+PATH_STR=$4
+DISK_ALLOWED=$5
+
+# Convert name lvm 
+if [[ $NAME =~ ['-'] ]]; then
+    NAME_CV=$(echo "$NAME" | sed -r 's/-/--/g')
+else 
+    NAME_CV=$NAME
+fi
+
+# Script exec
+lvcreate -V${DISK_ALLOWED}B -T ${VG_NAME}/${LV_THINPOOL} -n ${NAME}
+mkdir -p ${PATH_STR}
+mkfs.ext4 -F /dev/${VG_NAME}/${NAME}
+while [ $(blkid | grep "/dev/mapper/${VG_NAME}-${NAME_CV}:"| wc -l) -ne 1 ]; do sleep 2s; done
+UUID=$(blkid | grep -w "${VG_NAME}-${NAME_CV}:" | awk '{print $2}' | cut -d '=' -f2 | tr -d '"')
+
+# Remove failed fstab & cannot get UUID
+sed -Ei "/${UUID}/d"  /etc/fstab
+sed -Ei "/UUID= /d"  /etc/fstab
+
+# Add fstab & mount
+echo "UUID=${UUID} ${PATH_STR}                   ext4    defaults        0 0" >> /etc/fstab
+mount "/dev/mapper/${VG_NAME}-${NAME_CV}" ${PATH_STR}

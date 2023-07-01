@@ -1,0 +1,74 @@
+image: reg.fptcompute.com.vn/dev/caspython:0.1
+variables:
+  PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
+
+cache:
+  paths:
+    - .cache/pip
+    - venv/
+
+#before_script:
+#  - python -V
+#  - pip install --upgrade pip
+#  - pip install virtualenv
+#  - virtualenv venv
+#  - source venv/bin/activate
+
+stages:
+- sonarqube-check
+- build
+- test
+- deploy
+
+build:
+  stage: build
+  script:
+    - echo "Install dependencies"
+    - python -V
+    - pip install --upgrade pip
+    - pip install virtualenv
+    - virtualenv venv
+    - source venv/bin/activate
+    - pip install -r src/requirements.txt
+    - pip install git+https://github.com/khanhct/shade.git@main#egg=shade
+
+test:
+  stage: test
+  script:
+    - echo "Run testcase"
+    - python -V
+    - pip install --upgrade pip
+    - pip install virtualenv
+    - virtualenv venv
+    - source venv/bin/activate
+    - pip install -r src/requirements.txt
+    - mkdir /etc/benji
+    - cp -rf etc/benji-minimal.yaml /etc/benji/benji.yaml
+    - cd src
+    - coverage run -m unittest benji.tests.apis.test_user.TestUser
+
+deploy:
+  stage: deploy
+  script:
+    - echo "Deploying system"
+
+
+sonarqube-check:
+  stage: sonarqube-check
+  image:
+    name: sonarsource/sonar-scanner-cli:latest
+    entrypoint: [""]
+  variables:
+    SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"  # Defines the location of the analysis task cache
+    GIT_DEPTH: "0"  # Tells git to fetch all the branches of the project, required by the analysis task
+  cache:
+    key: "${CI_JOB_NAME}"
+    paths:
+      - .sonar/cache
+  script:
+    - sonar-scanner -Dsonar.qualitygate.wait=true
+  allow_failure: true
+  only:
+    - merge_requests
+    - master
+    - develop

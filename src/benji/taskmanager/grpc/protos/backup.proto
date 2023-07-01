@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package backup;
+
+import "base_type.proto";
+import "backup_type.proto";
+
+service BackupService {
+  rpc ping (base.Empty) returns (base.Health);
+  rpc create (BackupInput) returns (backup.BackupOutput);
+  rpc delete (BackupDeleteInput) returns (backup.BackupOutput);
+  rpc restore (BackupRestoreInput) returns (backup.BackupOutput);
+
+  rpc map_storage (StorageInput) returns (base.Output);
+  rpc update_storage (StorageInput) returns (base.Output);
+  rpc delete_storage (StorageInput) returns (base.Output);
+  rpc get_node_disk_used_overcommit (NodeInput) returns (backup.NodeOutput);
+  rpc get_node_disk_used_percent (NodeInput) returns (backup.NodeOutput);
+}

@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package grpc_user;
+
+import "base_type.proto";
+import "user_type.proto";
+
+service UserService {
+    rpc create_user(User) returns (base.Output);
+    rpc delete_user(User) returns (base.Output);
+}

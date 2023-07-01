@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package mails;
+
+import "mail_types.proto";
+
+service MailService {
+  rpc send_full_storage_issue(FullStorageIssue) returns (mails.MailReply);
+}

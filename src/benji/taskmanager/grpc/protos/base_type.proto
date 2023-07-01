@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package base;
+
+message Empty {
+
+}
+message Health {
+    bool status = 1;
+    string message = 2;
+}
+
+message Output {
+    bool status = 1;
+    string message = 2;
+}

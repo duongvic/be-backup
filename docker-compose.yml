@@ -1,0 +1,23 @@
+version : '3.1'
+services:
+  redis:
+    image: redis
+    restart: on-failure
+    ports:
+      - 6379:6379
+  database:
+    image: mariadb
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    environment:
+      MYSQL_ROOT_PASSWORD: Cas2020
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: Cas2020
+      MYSQL_DATABASE: cascloud
+    restart: on-failure
+    ports:
+      - 3306:3306
+    volumes:
+      - database:/var/lib/mysql
+volumes:
+  database:
+    driver: local

@@ -1,0 +1,61 @@
+configurationVersion: '1'
+databaseEngine: mysql+pymysql://admin:Cas2020@localhost:3306/cascloud?charset=utf8mb4
+defaultStorage: cassystems
+logFile: /var/log/benji.log
+defaultPath: /backups
+lvm_vg: benji_vg
+lvm_lvthinpool: benji_lvthinpool
+lvm_permit_overcommit: 1.4
+bind_host: 0.0.0.0
+bind_port: 5000
+bind_grpc_port: 55051
+thread_workers: 2
+enable_secure_grpc_messaging: false
+taskmanager_grpc_credential: /tmp
+log_level: INFO
+console_formatter: console-colored
+
+ios:
+  - name: file
+    module: file
+  - name: rbd
+    module: rbd
+    configuration:
+      simultaneousReads: 3
+      simultaneousWrites: 3
+      cephConfigFile: /etc/ceph/ceph.conf
+      clientIdentifier: admin
+      newImageFeatures:
+        - RBD_FEATURE_LAYERING
+        - RBD_FEATURE_EXCLUSIVE_LOCK
+        - RBD_FEATURE_STRIPINGV2
+        - RBD_FEATURE_OBJECT_MAP
+        - RBD_FEATURE_FAST_DIFF
+        - RBD_FEATURE_DEEP_FLATTEN
+
+storages:
+  - name: cassystems
+    storageId: 1
+    module: file
+    configuration:
+      path: /backups/cassystems
+    node: node1
+    user_id: 1
+
+nodes:
+  - name: node1
+    host: 172.16.1.77
+    port: 55051
+
+grpc_managers:
+  - service: benji.taskmanager.grpc.build.backup_pb2_grpc.add_BackupServiceServicer_to_server
+    servicer: benji.taskmanager.grpc.servicers.BackupServicer
+  - service: benji.taskmanager.grpc.build.user_pb2_grpc.add_UserServiceServicer_to_server
+    servicer: benji.taskmanager.grpc.servicers.UserServicer
+
+ops_auth:
+  username: admin
+  password: 36329bc73c274fba
+  project_name: admin
+  endpoint: http://172.16.1.6:5000
+  domain_name: Default

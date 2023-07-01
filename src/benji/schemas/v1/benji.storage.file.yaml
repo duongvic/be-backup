@@ -1,0 +1,9 @@
+parents:
+  - benji.storage.base-v1
+configuration:
+  required: True
+  schema:
+    path:
+      type: string
+      empty: False
+      required: True

@@ -1,0 +1,3 @@
+include benji/schemas/v1/*.yaml
+include benji/sql_migrations/alembic.ini
+include benji/sql_migrations/alembic/script.py.mako

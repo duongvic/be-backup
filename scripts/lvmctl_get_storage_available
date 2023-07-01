@@ -1,0 +1,38 @@
+#!/bin/bash 
+# 2021-06-28
+# CanhDX - canhdx2@fpt.com.vn - FTI_CAS
+# Check storage disk used
+# ----------------------------------------------
+
+display_help() {
+    echo "======================================================"
+    echo "# Script support Benji backup service"
+    echo "# Check storage disk available"
+    echo "======================================================"
+    echo "Usage: $0 {PATH}" >&2
+    echo
+    echo "   Required 1 parrams:"
+    echo "   - PATH_STR           PATH attach to lvm pool"
+    echo
+    echo "======================================================"
+    exit 1
+}
+
+LENGTH_VAR=$(echo "$@" | awk '{print NF}')
+
+if [ "$LENGTH_VAR" -eq 0 ]  || [ "$1" == "-h" ] || [ "$1" == "--help" ]; then
+  display_help
+  exit 0
+fi
+
+if [ "$LENGTH_VAR" -ne 1 ]; then
+    echo "Illegal number of parameters"
+    exit 0
+fi
+
+PATH_STR=$1
+
+# Script exec
+STORAGE_RAW_AVAIL_SIZE=$(df | grep -w ${PATH_STR} | awk '{print $4}')
+STORAGE_AVAIL_SIZE=$(echo $(( ${STORAGE_RAW_AVAIL_SIZE} * 1024 )))
+echo ${STORAGE_AVAIL_SIZE}

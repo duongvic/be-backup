@@ -1,0 +1,9 @@
+*~
+.git
+docs
+charts
+website
+etc
+!etc/benji-minimal.yaml
+tests
+**/tests

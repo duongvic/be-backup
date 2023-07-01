@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package grpc_user;
+
+message User {
+  int64 id = 1;
+  string userid = 2;
+  string name = 3;
+  string email = 4;
+  string phone_number = 5;
+  string role = 6;
+  bool status = 7;
+  string password_digest = 8;
+  bool enable_two_factors = 9;
+}

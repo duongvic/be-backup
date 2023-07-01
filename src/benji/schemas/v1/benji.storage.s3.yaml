@@ -1,0 +1,68 @@
+parents:
+- benji.storage.base.ReadCache-v1
+configuration:
+  required: True
+  schema:
+    awsAccessKeyId:
+      type: string
+      empty: False
+      required: True
+      excludes:
+        - awsAccessKeyIdFile
+    awsAccessKeyIdFile:
+      type: string
+      empty: False
+      required: True
+      excludes:
+        - awsAccessKeyId
+    awsSecretAccessKey:
+      type: string
+      empty: False
+      required: True
+      excludes:
+        - awsSecretAccessKeyFile
+    awsSecretAccessKeyFile:
+      type: string
+      required: True
+      empty: False
+      excludes:
+        - awsSecretAccessKey
+    regionName:
+      type: string
+      empty: False
+    endpointUrl:
+      type: string
+      empty: False
+    useSsl:
+      type: boolean
+      empty: False
+      default: True
+    addressingStyle:
+      type: string
+      empty: False
+    signatureVersion:
+      type: string
+      empty: False
+    bucketName:
+      type: string
+      empty: False
+      required: True
+    disableEncodingType:
+      type: boolean
+      empty: False
+      default: False
+    connectTimeout:
+      type: float
+      empty: False
+      min: 0.0
+      default: 60.0
+    readTimeout:
+      type: float
+      empty: False
+      min: 0.0
+      default: 60.0
+    maxAttempts:
+      type: integer
+      empty: False
+      min: 1
+      default: 5

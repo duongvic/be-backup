@@ -1,0 +1,887 @@
+{
+	"info": {
+		"_postman_id": "d35edc61-c5ba-408e-af92-260fb0b7fa8f",
+		"name": "Benji backup API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Old",
+			"item": [
+				{
+					"name": "List storage backend",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://172.23.8.40:8080/apis/core/v1/storages",
+							"protocol": "http",
+							"host": [
+								"172",
+								"23",
+								"8",
+								"40"
+							],
+							"port": "8080",
+							"path": [
+								"apis",
+								"core",
+								"v1",
+								"storages"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get used storage ",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://172.23.8.40:8080/apis/core/v1/storages/storage-glusterfs",
+							"protocol": "http",
+							"host": [
+								"172",
+								"23",
+								"8",
+								"40"
+							],
+							"port": "8080",
+							"path": [
+								"apis",
+								"core",
+								"v1",
+								"storages",
+								"storage-glusterfs"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List backups",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://172.23.8.40:8080/apis/core/v1/versions?volume=volume-JUhet9nY",
+							"protocol": "http",
+							"host": [
+								"172",
+								"23",
+								"8",
+								"40"
+							],
+							"port": "8080",
+							"path": [
+								"apis",
+								"core",
+								"v1",
+								"versions"
+							],
+							"query": [
+								{
+									"key": "volume",
+									"value": "volume-JUhet9nY"
+								},
+								{
+									"key": "status",
+									"value": "valid",
+									"disabled": true
+								},
+								{
+									"key": "from_date",
+									"value": "2021-04-21",
+									"disabled": true
+								},
+								{
+									"key": "to_date",
+									"value": "2021-04-30",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get detail backups",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://172.23.8.40:8080/apis/core/v1/versions/1GB-5441ym",
+							"protocol": "http",
+							"host": [
+								"172",
+								"23",
+								"8",
+								"40"
+							],
+							"port": "8080",
+							"path": [
+								"apis",
+								"core",
+								"v1",
+								"versions",
+								"1GB-5441ym"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Backup",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"source\": \"rbd:volumes/volume-JUhet9nY\",\n\t\"volume\": \"volume-JUhet9nY\",\n\t\"storage_name\":\"storage-glusterfs\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://172.23.8.40:8080/apis/core/v1/versions",
+							"protocol": "http",
+							"host": [
+								"172",
+								"23",
+								"8",
+								"40"
+							],
+							"port": "8080",
+							"path": [
+								"apis",
+								"core",
+								"v1",
+								"versions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update backup info(protect, label)",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n   \"protected\":\"False\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://172.23.8.40:8080/apis/core/v1/versions/1GB-f4ydgi",
+							"protocol": "http",
+							"host": [
+								"172",
+								"23",
+								"8",
+								"40"
+							],
+							"port": "8080",
+							"path": [
+								"apis",
+								"core",
+								"v1",
+								"versions",
+								"1GB-f4ydgi"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Restore backup",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"destination\": \"rbd:volumes/volume-3Lv7rPFL\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://172.23.8.40:8080/apis/core/v1/versions/volume-3Lv7rPFL-3gvbn0/restore",
+							"protocol": "http",
+							"host": [
+								"172",
+								"23",
+								"8",
+								"40"
+							],
+							"port": "8080",
+							"path": [
+								"apis",
+								"core",
+								"v1",
+								"versions",
+								"volume-3Lv7rPFL-3gvbn0",
+								"restore"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete backup",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://172.23.8.40:8080/apis/core/v1/versions/backupfile-ec2vz1",
+							"protocol": "http",
+							"host": [
+								"172",
+								"23",
+								"8",
+								"40"
+							],
+							"port": "8080",
+							"path": [
+								"apis",
+								"core",
+								"v1",
+								"versions",
+								"backupfile-ec2vz1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Scrub",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://172.23.8.40:8080/apis/core/v1/versions/scrub",
+							"protocol": "http",
+							"host": [
+								"172",
+								"23",
+								"8",
+								"40"
+							],
+							"port": "8080",
+							"path": [
+								"apis",
+								"core",
+								"v1",
+								"versions",
+								"scrub"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Deep scrub",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://172.23.8.40:8080/apis/core/v1/versions/deep-scrub",
+							"protocol": "http",
+							"host": [
+								"172",
+								"23",
+								"8",
+								"40"
+							],
+							"port": "8080",
+							"path": [
+								"apis",
+								"core",
+								"v1",
+								"versions",
+								"deep-scrub"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CEPH-Authentication",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"username\": \"admin\",\n\t\"password\": \"WujN3oc7iVImR0UP\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://172.23.8.36:8443/api/auth",
+							"protocol": "http",
+							"host": [
+								"172",
+								"23",
+								"8",
+								"36"
+							],
+							"port": "8443",
+							"path": [
+								"api",
+								"auth"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CEPH-List volume",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJjZXBoLWRhc2hib2FyZCIsImlhdCI6MTYxOTE0NDcwNiwidXNlcm5hbWUiOiJhZG1pbiIsImp0aSI6IjhkYjNiMTkyLTE3ODMtNDc1Zi05ZmU1LTcxNzgyOGZiZWMwYSIsImV4cCI6MTYxOTE3MzUwNn0.VQO5AQI1_w4P7My0xvsg8qQOX7yHYKuw3HNZT94iG6I",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://172.23.8.36:8443/api/block/image?pool_name=volumes",
+							"protocol": "http",
+							"host": [
+								"172",
+								"23",
+								"8",
+								"36"
+							],
+							"port": "8443",
+							"path": [
+								"api",
+								"block",
+								"image"
+							],
+							"query": [
+								{
+									"key": "pool_name",
+									"value": "volumes"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CEPH-Delete volume",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJjZXBoLWRhc2hib2FyZCIsImlhdCI6MTYxOTE0NDcwNiwidXNlcm5hbWUiOiJhZG1pbiIsImp0aSI6IjhkYjNiMTkyLTE3ODMtNDc1Zi05ZmU1LTcxNzgyOGZiZWMwYSIsImV4cCI6MTYxOTE3MzUwNn0.VQO5AQI1_w4P7My0xvsg8qQOX7yHYKuw3HNZT94iG6I",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://172.23.8.36:8443/api/block/image/volumes/volume-CbmK4Jss",
+							"protocol": "http",
+							"host": [
+								"172",
+								"23",
+								"8",
+								"36"
+							],
+							"port": "8443",
+							"path": [
+								"api",
+								"block",
+								"image",
+								"volumes",
+								"volume-CbmK4Jss"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "New",
+			"item": [
+				{
+					"name": "List Node",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOST}}/api/v1/benji/nodes",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"benji",
+								"nodes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Node",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"node2\",\n    \"host\": \"172.23.8.47\",\n    \"port\": 55051\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/api/v1/benji/nodes",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"benji",
+								"nodes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List Storages",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOST}}/api/v1/benji/storages",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"benji",
+								"storages"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create storage",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"bact02\",\n    \"disk_allowed\": 10\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/api/v1/benji/storages",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"benji",
+								"storages"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update storage",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"disk_allowed\": 19\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/api/v1/benji/storage/10",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"benji",
+								"storage",
+								"10"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Storage(WARNING!!!)",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/api/v1/benji/storage/4",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"benji",
+								"storage",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List versions",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOST}}/api/v1/benji/versions",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"benji",
+								"versions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Version",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"storage_name\": \"canhdx01\",\n    \"volume_id\": \"khanhct\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/api/v1/benji/versions",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"benji",
+								"versions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get version",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOST}}/api/v1/benji/version/1",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"benji",
+								"version",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Restore version",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"force\": true, \n\t\"wait\": false\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/api/v1/benji/version/3",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"benji",
+								"version",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete version",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"force\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/api/v1/benji/version/2",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"benji",
+								"version",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List jobs",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOST}}/api/v1/benji/schedule/jobs",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"benji",
+								"schedule",
+								"jobs"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Jobs",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"volume_id\": \"3Lv7rPFL\",\n    \"name\": \"3Lv7rPFL\",\n    \"mode\": \"BACKUP\",\n    \"days_of_week\": [\"fri\",\"sat\",\"sun\"],\n    \"start_time\": 299,\n    \"storage_name\": \"canhdx0004\",\n    \"retention\": -1\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/api/v1/benji/schedule/jobs",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"benji",
+								"schedule",
+								"jobs"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get job",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOST}}/api/v1/benji/schedule/job/1",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"benji",
+								"schedule",
+								"job",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update job",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\n    \"start_time\": 599,\n    \"days_of_week\": [\"mon\", \"tue\", \"thu\"]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/api/v1/benji/schedule/job/3",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"benji",
+								"schedule",
+								"job",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete job",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"force\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/api/v1/benji/schedule/job/2",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"benji",
+								"schedule",
+								"job",
+								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}

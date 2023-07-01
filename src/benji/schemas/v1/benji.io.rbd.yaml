@@ -1,0 +1,30 @@
+configuration:
+  type: dict
+  required: True
+  empty: False
+  schema:
+    simultaneousWrites:
+      type: integer
+      empty: False
+      min: 1
+      default: 3
+    simultaneousReads:
+      type: integer
+      empty: False
+      min: 1
+      default: 3
+    cephConfigFile:
+      type: string
+      empty: False
+      default: /etc/ceph/ceph.conf
+    clientIdentifier:
+      type: string
+      empty: False
+      default: admin
+    newImageFeatures:
+      type: list
+      empty: False
+      default: ['RBD_FEATURE_LAYERING']
+      schema:
+        type: string
+        regex: '^RBD_FEATURE_.*'

@@ -1,0 +1,23 @@
+version = 1
+
+test_patterns = [
+  "src/benji/tests/**",
+  "tests/**"
+]
+
+[[analyzers]]
+name = "python"
+enabled = true
+
+  [analyzers.meta]
+  runtime_version = "3.x.x"
+
+[[analyzers]]
+name = "docker"
+enabled = true
+
+  [analyzers.meta]
+  dockerfile_paths = [
+   "images/benji-k8s/Dockerfile",
+   "images/benji/Dockerfile"
+  ]

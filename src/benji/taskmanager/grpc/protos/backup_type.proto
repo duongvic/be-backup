@@ -1,0 +1,50 @@
+syntax = "proto3";
+
+package backup;
+
+message BackupInput {
+  int32 id = 1;
+  string volume_id = 2;
+  string source = 3;
+  string hint = 4;
+  string base_version_uid = 5;
+}
+
+message BackupOutput {
+  int32 id = 1;
+  bool status = 2;
+}
+
+message BackupRestoreInput {
+  int32 id = 1;
+  string volume_id = 2;
+  bool sparse = 3;
+  bool force = 4;
+  bool database_backend_less = 5;
+}
+
+message BackupDeleteInput {
+  int32 id = 1;
+  bool keep_metadata_backup = 2;
+  bool override_lock = 3;
+  bool force = 4;
+}
+
+message StorageInput {
+  int32 node_id = 1;
+  string name = 2;
+  string vg_name = 3;
+  string path = 4;
+  string lv_thinpool = 5;
+  int64 disk_allowed = 6;
+}
+
+message NodeInput {
+  string vg_name = 1;
+  string lvm_lvthinpool = 2;
+}
+
+message NodeOutput {
+  bool status = 1;
+  int64 size = 2;
+}

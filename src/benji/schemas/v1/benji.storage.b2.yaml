@@ -1,0 +1,51 @@
+parents:
+- benji.storage.base.ReadCache-v1
+configuration:
+  required: True
+  schema:
+    accountId:
+      type: string
+      required: True
+      empty: False
+      excludes:
+        - accountIdFile
+    accountIdFile:
+      type: string
+      required: True
+      empty: False
+      excludes:
+        - accountId
+    applicationKey:
+      type: string
+      required: True
+      empty: False
+      excludes:
+        - applicationKeyFile
+    applicationKeyFile:
+      type: string
+      required: True
+      empty: False
+      excludes:
+        - applicationKey
+    bucketName:
+      type: string
+      required: True
+      empty: False
+    accountInfoFile:
+      type: string
+      empty: False
+    uploadAttempts:
+      type: integer
+      empty: False
+      default: 5
+      min: 1
+    writeObjectAttempts:
+      type: integer
+      empty: False
+      default: 3
+      min: 1
+    readObjectAttempts:
+      type: integer
+      empty: False
+      default: 3
+      min: 1

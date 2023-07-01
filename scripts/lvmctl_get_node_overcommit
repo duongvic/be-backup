@@ -1,0 +1,67 @@
+#!/bin/bash 
+# 2021-06-28
+# CanhDX - canhdx2@fpt.com.vn - FTI_CAS
+# LVM Controller check node over commit
+# ----------------------------------------------
+
+display_help() {
+    echo "======================================================"
+    echo "# Script support Benji backup service"
+    echo "# Check overcommit when create lv in lvthinpool"
+    echo "======================================================"
+    echo "Usage: $0 {VG_NAME} {LV_THINPOOL}" >&2
+    echo
+    echo "   Required 2 parrams:"
+    echo "   - VG_NAME           VG of LVM"
+    echo "   - LV_THINPOOL       LVthinpool to create LV of LVM"
+    echo
+    echo "======================================================"
+    exit 1
+}
+
+LENGTH_VAR=$(echo "$@" | awk '{print NF}')
+
+if [ "$LENGTH_VAR" -eq 0 ]  || [ "$1" == "-h" ] || [ "$1" == "--help" ]; then
+  display_help
+  exit 0
+fi
+
+if [ "$LENGTH_VAR" -ne 2 ]; then
+    echo "Illegal number of parameters"
+    exit 0
+fi
+
+VG_NAME=$1
+LV_THINPOOL=$2
+
+# function 
+function num2gb() {
+    RAW_SIZE=$1
+    RAW_UNIT=${RAW_SIZE: -1}
+    if [ "$RAW_UNIT" == "m" ]; then
+        SIZE=0
+    elif [ "$RAW_UNIT" == "g" ]; then
+        #SIZE=${RAW_SIZE%,*}
+        SIZE=$(echo  $RAW_SIZE | cut -d ',' -f1 | cut -d '.' -f1)
+    elif [ "$RAW_UNIT" == "t" ]; then
+        T_SIZE=$(echo ${RAW_SIZE%t*} | sed "s/,/./g")
+        SIZE=$(echo  $T_SIZE*1000 | bc | cut -d '.' -f1)
+    elif [ "$RAW_UNIT" == "p" ]; then
+        P_SIZE=$(echo ${RAW_SIZE%t*} | sed "s/,/./g")
+        SIZE=$(echo  $T_SIZE*1000*1000 | bc | cut -d '.' -f1)
+    fi
+    echo ${SIZE}
+}
+
+
+# Script exec
+LV_THINPOOL_RAW_SIZE=$(lvs | grep ${VG_NAME} | grep ${LV_THINPOOL} |  grep 'twi-aotz--' | awk '{print $4}')
+LV_THINPOOL_SIZE=$(num2gb $LV_THINPOOL_RAW_SIZE)
+LIST_LV_RAW_SIZE=$(lvs | grep ${VG_NAME} | grep ${LV_THINPOOL} |  grep 'Vwi-aotz--' | awk '{print $4}')
+SUM_CAPACITY=0
+for LV_RAW_SIZE in $(echo $LIST_LV_RAW_SIZE); 
+do  
+    SUM_CAPACITY=$(echo $(( $(num2gb $LV_RAW_SIZE) + $SUM_CAPACITY )))
+done
+OVERCOMMIT=$(awk "BEGIN {printf \"%.3f\n\", $SUM_CAPACITY / $LV_THINPOOL_SIZE}")
+echo $OVERCOMMIT

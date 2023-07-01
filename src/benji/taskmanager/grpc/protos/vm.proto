@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package grpc_vm;
+
+import "base_type.proto";
+import "vm_type.proto";
+
+service VMService {
+    rpc create_vm(VM) returns (base.Output);
+    rpc delete_vm(VM) returns (base.Output);
+}

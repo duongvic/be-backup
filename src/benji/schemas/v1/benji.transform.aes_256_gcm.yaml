@@ -1,0 +1,40 @@
+configuration:
+  required: True
+  schema:
+    masterKey:
+      type: string
+      empty: False
+      required: True
+      excludes:
+        - kdfSalt
+        - kdfIterations
+        - password
+    kdfSalt:
+      type: string
+      empty: False
+      required: True
+      excludes:
+        - masterKey
+      dependencies:
+        - kdfIterations
+        - password
+    kdfIterations:
+      type: integer
+      empty: False
+      required: True
+      min: 1000
+      excludes:
+        - masterKey
+      dependencies:
+        - kdfSalt
+        - password
+    password:
+      type: string
+      empty: False
+      required: True
+      minlength: 8
+      excludes:
+        - masterKey
+      dependencies:
+        - kdfSalt
+        - kdfIterations

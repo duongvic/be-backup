@@ -1,0 +1,37 @@
+#!/bin/bash 
+# 2021-06-28
+# CanhDX - canhdx2@fpt.com.vn - FTI_CAS
+# LVM Controller check node used percent
+# ----------------------------------------------
+
+display_help() {
+    echo "======================================================"
+    echo "# Script support Benji backup service"
+    echo "# Check overcommit when create lv in lvthinpool"
+    echo "======================================================"
+    echo "Usage: $0 {LV_THINPOOL}" >&2
+    echo
+    echo "   Required 1 parrams:"
+    echo "   - LV_THINPOOL       LVthinpool to create LV of LVM"
+    echo
+    echo "======================================================"
+    exit 1
+}
+
+LENGTH_VAR=$(echo "$@" | awk '{print NF}')
+
+if [ "$LENGTH_VAR" -eq 0 ]  || [ "$1" == "-h" ] || [ "$1" == "--help" ]; then
+  display_help
+  exit 0
+fi
+
+if [ "$LENGTH_VAR" -ne 1 ]; then
+    echo "Illegal number of parameters"
+    exit 0
+fi
+
+LV_THINPOOL=$1
+
+# Script exec
+PERCENT=$(lvs | grep -w ${LV_THINPOOL} | grep 'twi-aotz--' | head -n 1 | awk '{print $5}')
+echo $PERCENT
